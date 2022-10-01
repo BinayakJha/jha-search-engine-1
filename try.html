@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+:root {
+  --light-grey: #ccc;
+  --item-hover-grey: #E6E6E6;
+  --button-grey: #757575;
+  --button-bg-grey: #f1f1f1;
+  --microphone-width: 1.5rem;
+}
+
+.search {
+  width: 36rem;
+  margin: 0 auto;
+  margin-top: 5rem;
+  font-family: Arial;
+}
+
+.search--autosuggest {
+  box-shadow: 1px 4px 8px #D3D3D3;
+}
+
+.search__bar {
+  position: relative;
+  border: 1px solid var(--light-grey);
+  border-radius: 2px;
+  box-shadow: 1px 4px 8px #D3D3D3;
+}
+
+.search__bar--autosuggest {
+  box-shadow: none;
+}
+
+.search__bar__input {
+  border: none;
+  width: calc(100% - var(--microphone-width) - 0.7rem);
+  padding: 0.6rem;
+  padding-right: calc(var(--microphone-width) - 0.1rem);
+  font-size: 16px;
+  font-family: Arial;
+  outline: none;
+}
+
+.search__bar__microphone {
+  width: var(--microphone-width);
+  position: absolute;
+  right: 0.2rem;
+  top: 0.5rem;
+}
+
+.search__suggestions {
+  border: 1px solid var(--light-grey);
+  border-top: 0;
+  border-bottom: 0;
+  font-size: 16px;
+  font-family: Arial;
+}
+
+.search__suggestions__list {
+  padding-right: 1rem;
+  line-height: 1.5;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search__suggestions__list__result {
+  padding-left: 1rem;
+}
+
+.search__suggestions__list__result:hover {
+  background: var(--item-hover-grey);
+  cursor: default;
+}
+
+.search__actions {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.search__actions--autosuggest {
+  margin: 0;
+  border: 1px solid var(--light-grey);
+  border-top: 0;
+  padding: 1rem 0 0.1rem 0;
+}
+
+.search__actions__action {
+  height: 2rem;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Arial;
+  color: var(--button-grey);
+  background: var(--button-bg-grey);
+  padding: 0.4rem 1rem;
+  outline: none;
+  border: none;
+  margin: 0.2 0.2rem;
+}
+
+.search__actions__action:hover {
+  color: black;
+  box-shadow: 0 0 1px #A9A9A9;
+}
+    </style>
+</head>
+<body>
+    <div class="search">
+        <div class="search__bar">
+          <input type="text" class="search__bar__input" />
+          <img class="search__bar__microphone" src="https://js.educative.io/udata/1k67lQRoagd/microphone.png" />
+        </div>
+        <div class="search__suggestions">
+          <ul class="search__suggestions__list">
+          </ul>
+        </div>
+        <div class="search__actions">
+          <button class="search__actions__action search__actions__action--search">Google search</button>
+          <button class="search__actions__action search__actions__action--lucky">I'm Feeling Lucky</button>
+        </div>
+      </div>
+
+  <script>
+const HOST = 'server.com/';
+
+const searchInput = document.getElementsByClassName('search__bar__input')[0];
+const suggestionsElement = document.getElementsByClassName('search__suggestions__list')[0];
+const actionsElement = document.getElementsByClassName('search__actions')[0];
+
+function wrapBoldedCharacters({inputValue, suggestion}) {
+  if (suggestion.startsWith(inputValue)) {
+    return `${suggestion.substring(0, inputValue.length)}<b>${suggestion.substring(inputValue.length, suggestion.length)}</b>`;
+  }
+  return `<b>${suggestion}</b>`;
+}
+
+function createSuggestionElement({suggestion, auxiliaryData}) {
+  const auxiliaryString = auxiliaryData ? ` - ${auxiliaryData}` : "";
+  const boldProcessedSuggestion = wrapBoldedCharacters({
+    inputValue: searchInput.value,
+    suggestion
+  });
+  return `<li class="search__suggestions__list__result">${boldProcessedSuggestion}${auxiliaryString}</li>`
+}
+
+function onSuggestionsResponse(data) {
+  let suggestionsHTML = "";
+  for (const suggestion of data) {
+    suggestionsHTML += createSuggestionElement({
+      suggestion: suggestion.suggestion,
+      auxiliaryData: suggestion.auxiliary
+    });
+  }
+  suggestionsElement.innerHTML = suggestionsHTML;
+  if (suggestionsHTML) {
+    actionsElement.classList.add('search__actions--autosuggest');
+  } else {
+    actionsElement.classList.remove('search__actions--autosuggest');
+  }
+}
+
+function onNewInput(event) {
+  if (searchInput.value) {
+    api.get(HOST + 'autocomplete', searchInput.value, onSuggestionsResponse);
+  } else {
+    suggestionsElement.innerHTML = '';
+    actionsElement.classList.remove('search__actions--autosuggest');
+  }
+}
+
+searchInput.oninput = onNewInput;
+
+
+// Server
+
+function getRandomString({length}) { 
+  const characterChoices = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "; 
+  const characters = [];
+  while (characters.length < length) {
+    const randomIndex = Math.floor(Math.random() * characterChoices.length);
+    characters.push(characterChoices[randomIndex]);
+  }
+  return characters.join('');
+}
+
+function getRandomInteger({min, max}) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+function generateSuggestion(prefix) {
+  const RATIO_EXACT_MATCH = 0.3;
+  const RATIO_AUTOCORRECT = 0.1;
+  
+  if (Math.random() < RATIO_AUTOCORRECT) {
+    return getRandomString({ length: getRandomInteger({min: 1, max: prefix.length}) })
+  }
+  
+  if (Math.random() < RATIO_EXACT_MATCH) {
+    return prefix;
+  }
+
+  return prefix + getRandomString({ length: getRandomInteger({min: 1, max: 10}) })
+}
+
+function getAutocompleteHandler(data) {
+  const MAX_CHARS = 10;
+  const NUM_AUTOCOMPLETE_RESULTS = 10;
+  const RATIO_AUXILIARY_DATA = 0.1;
+  
+  if (data.length > MAX_CHARS) {
+    return [];
+  }
+  
+  const results = [];
+  while (results.length < NUM_AUTOCOMPLETE_RESULTS) {
+    const suggestion = generateSuggestion(data)
+    if (results.find(result => result.suggestion === suggestion)) {
+      continue;
+    }
+    
+    if (Math.random() < RATIO_AUXILIARY_DATA) {
+      for (let i = 0; i < 2; i++) {
+        results.push({
+          suggestion, 
+          auxiliary: getRandomString({ length: getRandomInteger({min: 5, max: 15}) }) 
+        });
+      }
+    } else {
+      results.push({ suggestion, auxiliary: "" });
+    }
+  }
+  return results;
+}
+
+const endpoints = {
+  "/": {
+    "get": () => "hello world"
+  },
+  "/autocomplete": {
+    "get": getAutocompleteHandler
+  }
+}
+
+// API library
+
+function getFunction(url, data, callback) {
+  const domain = url.substring(0, url.indexOf("/"));
+  const endpoint = url.substring(url.indexOf("/"), url.length);
+
+  callback(endpoints[endpoint]["get"](data));
+}
+
+const api = {
+  get: getFunction
+};
+  </script>
+</body>
+</html>

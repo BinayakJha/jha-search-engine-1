@@ -4,6 +4,7 @@ import requests
 from requests_html import HTMLSession
 import urllib
 import replit
+import random
 # Create your views here.
 
 # ------------------------------------------------------------------------------------
@@ -11,7 +12,12 @@ import replit
 # ------------------------------------------------------------------------------------
 
 def get_source(url):
+    user_agent_list = [
+    'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    ]
     try:
+        headers ={"User-Agent": user_agent_list[random.randint(0, len(user_agent_list)-1)]}
+        print('User agent ', headers)
         session = HTMLSession()
         response = session.get(url)
         return response
@@ -49,21 +55,83 @@ def scrape_google(query):
 def get_results(query):
 
     query = urllib.parse.quote_plus(query)
-    response = get_source("https://www.google.co.uk/search?q=" + query)
+    response = get_source("https://www.google.co.uk/search?q=" + query+"&source=hp&start=0"+"&num=100")
     # replace whitespace with +
     query = query.replace(" ", "+")
     return response
 
+# brave results 
+
+def brave_results(query):
+    query = urllib.parse.quote_plus(query)
+    response2 = get_source("https://search.brave.com/search?q=" + query)
+    # replace whitespace with +
+    query = query.replace(" ", "+")
+    return response2
 
 # ------------------------------------------------------------------------------------
-# parsing results 
+# brave search
+# ------------------------------------------------------------------------------------
+def brave_search(response2):
+    output2 = []
+    results2 = response2.html.find('#side-right')
+    for result2 in results2:
+        data2 = dict()
+        try:
+
+            data2['title1'] = result2.find('.infobox-title', first=True).text
+            data2['description'] = result2.find('.infobox-description', first=True).text
+            data2['big_description'] = result2.find('.body .mb-6', first=True).text
+            data2['big_description'] = data2['big_description'].replace("Wikipedia", "")
+            data2['links'] = result2.find('.links a', first=True).attrs['href']
+        except:
+            pass
+        
+        try:
+            data2['rating_text'] = result2.find('.r-num')[1].text
+            data2['website_url']= result2.find('#website_url a', first=True).attrs['href']
+        except:
+            pass
+        try:
+            data2['rating_text_0'] = result2.find('.r-num')[0].text
+        except:
+            pass
+         # wikipedia image scraping
+        try:
+            # image
+            img_url = data2['links']
+
+            try:
+                session = HTMLSession()
+                response3 = session.get(img_url)
+
+            except requests.exceptions.RequestException as e:
+                print(e)
+            try:
+                data2['image_url'] = response3.html.find('.infobox-image img')[0].attrs['src']
+            except:
+                data2['image_url'] = response3.html.find('.thumbinner img')[0].attrs['src']
+        except:
+            pass
+        output2.append(data2)
+    return output2
+# ------------------------------------------------------------------------------------
+# brave search function
+# ------------------------------------------------------------------------------------
+def search_1(query):
+    response2 = brave_results(query)
+    return brave_search(response2)
+
+
+# ------------------------------------------------------------------------------------
+# parsing results
 # ------------------------------------------------------------------------------------
 
 def parse_results(response):
     css_identifier_result = ".tF2Cxc"
     css_identifier_title = ".yuRUbf h3"
     css_identifier_link = ".yuRUbf a"
-    css_identifier_text = ".IsZvec"
+    css_identifier_text = ".VwiC3b"
     css_identifier_cite = ".iUh30"
     # related search tab
     css_identifier_featured = ".GyAeWb"
@@ -72,20 +140,21 @@ def parse_results(response):
 
     output = []
     for result in results:
-        data = dict()
-        data['title'] = result.find(css_identifier_title, first=True).text
-        data['link'] = result.find(css_identifier_link, first=True).attrs['href']
-        data['favicon'] = "https://www.google.com/s2/favicons?sz=64&domain_url=" + data['link']
-        data['text'] = result.find(css_identifier_text, first=True).text
-        # data['text2'] = data['text'].replace("\n", "")
-        # filter the links from the text
-        data['text'] = data['text'].replace(data['link'], '')
-        # cite functions
-        data['cite'] = result.find(css_identifier_cite, first=True).text
-        data['cite'] = data['cite'].replace("https://", "")
-        data['cite'] = data['cite'].replace("http://", "")
-        data['cite'] = data['cite'].replace("www.", "")
-        data['cite'] = data['cite'].replace("...", "")
+        data = {}
+        try:
+            data['title'] = result.find(css_identifier_title, first=True).text
+            data['link'] = result.find(css_identifier_link, first=True).attrs['href']
+            data['favicon'] = "https://www.google.com/s2/favicons?sz=64&domain_url=" + data['link']
+            data['text'] = result.find(css_identifier_text, first=True).text
+            # data['text2'] = data['text'].replace("\n", "")
+            # filter the links from the text
+            data['text'] = data['text'].replace(data['link'], '')
+            # cite functions
+            data['cite'] = result.find(css_identifier_cite, first=True).text
+            data['cite'] = data['cite'].replace("...", "")
+            data['cite'] = data['cite'].replace("›", "")
+        except:
+            pass
         # close cite functions
         # youtube video image url
         if "/watch?v" in data['link']:
@@ -97,7 +166,7 @@ def parse_results(response):
 
 
 # ------------------------------------------------------------------------------------
-# dooing google search
+# doing google search
 # ------------------------------------------------------------------------------------
 
 def google_search(query):
@@ -112,16 +181,16 @@ def home(request):
     return render(request, 'core/home.html')
 
 # ------------------------------------------------------------------------------------
-# brave search
+# google sidesearch
 # ------------------------------------------------------------------------------------
 
-def side_search(response):
+# def side_search(response):
     output2 = []
     # try:
     results2 = response.html.find('.liYKde')
     # except:
     for result2 in results2:
-        data2 = dict()
+        data2 = {}
         try:
             data2['title1'] = result2.find('.qrShPb', first=True).text
         except:
@@ -165,6 +234,7 @@ def side_search(response):
         except:
             pass
         output2.append(data2)
+
     return output2
 
 # ------------------------------------------------------------------------------------
@@ -172,8 +242,8 @@ def side_search(response):
 # ------------------------------------------------------------------------------------
 
 def search_1(query):
-    response2 = get_results(query)
-    return side_search(response2)
+    response2 = brave_results(query)
+    return brave_search(response2)
 
 # ------------------------------------------------------------------------------------
 # main search function
@@ -189,9 +259,10 @@ def search(request):
 
         # Fetch brave data
         brave__results = search_1(query)
-    replit.clear()
+        if brave__results == [{}]:
+            brave__results = None
     return render(request, 'core/search.html', {'data': results, 'data2':brave__results})
-    
+
 # ------------------------------------------------------------------------------------
-# 
+#
 # ------------------------------------------------------------------------------------
