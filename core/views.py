@@ -1,3 +1,4 @@
+from unittest import result
 from django.http import HttpResponse, request
 from django.shortcuts import render
 import requests
@@ -14,12 +15,15 @@ import random
 def get_source(url):
     user_agent_list = [
     'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    'Mozilla/5.0 (compatible; Linux x86_64; Mail.RU_Bot/Fast/2.0; +http://go.mail.ru/help/robots)',
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53 BingPreview/1.0b',
     ]
     try:
         headers ={"User-Agent": user_agent_list[random.randint(0, len(user_agent_list)-1)]}
         print('User agent ', headers)
+
         session = HTMLSession()
-        response = session.get(url)
+        response = session.get(url, headers=headers)
         return response
 
     except requests.exceptions.RequestException as e:
@@ -96,6 +100,13 @@ def brave_search(response2):
             data2['rating_text_0'] = result2.find('.r-num')[0].text
         except:
             pass
+        try:
+            # take all the html too
+            data2['code'] = result2.find('.infobox-attr pre ', first=True).html
+            data2['code_text'] = result2.find('.infobox-attr p', first=True).html
+            print(data2['code_text'])
+        except:
+            pass
          # wikipedia image scraping
         try:
             # image
@@ -113,6 +124,7 @@ def brave_search(response2):
                 data2['image_url'] = response3.html.find('.thumbinner img')[0].attrs['src']
         except:
             pass
+       
         output2.append(data2)
     return output2
 # ------------------------------------------------------------------------------------
@@ -185,57 +197,57 @@ def home(request):
 # ------------------------------------------------------------------------------------
 
 # def side_search(response):
-    output2 = []
-    # try:
-    results2 = response.html.find('.liYKde')
-    # except:
-    for result2 in results2:
-        data2 = {}
-        try:
-            data2['title1'] = result2.find('.qrShPb', first=True).text
-        except:
-            pass
-        try:
-            data2['description'] = result2.find('.wwUB2c', first=True).text
-        except:
-            pass
-        try:
-            data2['big_description'] = result2.find('.kno-rdesc', first=True).text
-            data2['big_description'] = data2['big_description'].replace("Description", "")
-            data2['big_description'] = data2['big_description'].replace("Wikipedia", "")
+    # output2 = []
+    # # try:
+    # results2 = response.html.find('.liYKde')
+    # # except:
+    # for result2 in results2:
+    #     data2 = {}
+    #     try:
+    #         data2['title1'] = result2.find('.qrShPb', first=True).text
+    #     except:
+    #         pass
+    #     try:
+    #         data2['description'] = result2.find('.wwUB2c', first=True).text
+    #     except:
+    #         pass
+    #     try:
+    #         data2['big_description'] = result2.find('.kno-rdesc', first=True).text
+    #         data2['big_description'] = data2['big_description'].replace("Description", "")
+    #         data2['big_description'] = data2['big_description'].replace("Wikipedia", "")
 
-        except:
-            pass
-        try:
-            data2['links'] = result2.find('.ruhjFe', first=True).attrs['href']
-        except:
-            pass
-        # try:
-        #     data2['rating'] = result2.find('.h6', first=True).text
-        #     data2['rating_image'] = result2.find('.rating-source', first=True).attrs['src']
-        #     data2['rating_text'] = result2.find('.r .flex-hcenter .text-sm', first=True).text
-        # except:
-        #     pass
-         # wikipedia image scraping
-        try:
-            # image
-            img_url = data2['links']
+    #     except:
+    #         pass
+    #     try:
+    #         data2['links'] = result2.find('.ruhjFe', first=True).attrs['href']
+    #     except:
+    #         pass
+    #     # try:
+    #     #     data2['rating'] = result2.find('.h6', first=True).text
+    #     #     data2['rating_image'] = result2.find('.rating-source', first=True).attrs['src']
+    #     #     data2['rating_text'] = result2.find('.r .flex-hcenter .text-sm', first=True).text
+    #     # except:
+    #     #     pass
+    #      # wikipedia image scraping
+    #     try:
+    #         # image
+    #         img_url = data2['links']
 
-            try:
-                session = HTMLSession()
-                response3 = session.get(img_url)
+    #         try:
+    #             session = HTMLSession()
+    #             response3 = session.get(img_url)
 
-            except requests.exceptions.RequestException as e:
-                print(e)
-            try:
-                data2['image_url'] = response3.html.find('.infobox-image img')[0].attrs['src']
-            except:
-                data2['image_url'] = response3.html.find('.thumbinner img')[0].attrs['src']
-        except:
-            pass
-        output2.append(data2)
+    #         except requests.exceptions.RequestException as e:
+    #             print(e)
+    #         try:
+    #             data2['image_url'] = response3.html.find('.infobox-image img')[0].attrs['src']
+    #         except:
+    #             data2['image_url'] = response3.html.find('.thumbinner img')[0].attrs['src']
+    #     except:
+    #         pass
+    #     output2.append(data2)
 
-    return output2
+    # return output2
 
 # ------------------------------------------------------------------------------------
 # brave search function
@@ -263,6 +275,38 @@ def search(request):
             brave__results = None
     return render(request, 'core/search.html', {'data': results, 'data2':brave__results})
 
+def get_results_2(query):
+
+    query = urllib.parse.quote_plus(query)
+    response = get_source("https://depositphotos.com/stock-photos/" + query+".html")
+    # replace whitespace with +
+    query = query.replace(" ", "-")
+    return response
 # ------------------------------------------------------------------------------------
-#
+#  image search function
 # ------------------------------------------------------------------------------------
+def scrape_images(response):
+    images_lis =response.html.find('.flex-files')
+    output = []
+    for image in images_lis:
+        data = {}
+        for i in range(1, 30):
+            data['image'] = image.find('img')[i].attrs['src']
+            output.append(data)
+            i += 1
+    return output
+
+def image_search(query):
+    response = get_results_2(query)
+    return image_search(response)
+
+# ------------------------------------------------------------------------------------
+# image search function
+# ------------------------------------------------------------------------------------
+def image_search(request):
+    results = None
+    if 'query' in request.GET:
+        # Fetch search data
+        query= request.GET['query']
+        results= image_search(query)
+    return render(request, 'core/image_search.html', {'data': results})

@@ -1,0 +1,469 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--page-background);
+    overflow-x: hidden;
+    transition: 0.3s;
+}
+li{
+    list-style: none;
+
+}
+a{
+    text-decoration: none;
+    color: var(--page-color);
+}
+#main {
+    display: flex;
+    padding-top: 32px;
+    padding-left: 23px;
+    color: var(--page-color);
+}
+
+.title {
+    font-weight: 400;
+    margin: 1.5rem 0px 0.5rem;
+    padding: 0.5em 0px 0.25em;
+    line-height: 1;
+}
+
+#side-right {
+    width: 370px;
+}
+
+.section {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.section:last-child {
+    margin-left: 2vw;
+}
+
+.infobox {
+    border: none;
+    border: solid 0px #E2E8ED;
+    background-color: var(--snippet-color);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    max-width: 100%;
+    padding: 0px;
+    transition: 0.1s ease-in-out;
+}
+
+.infobox-header {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    padding: 0.8rem;
+}
+
+.infobox-header-text {
+    padding-top: 0.2rem;
+}
+
+
+.infobox-title {
+    font-size: 1.5rem;
+    font-family: 'Poppins', arial, sans-serif;
+    color: var(--page-color) !important;
+    line-height: 1.2;
+    word-break: break-all;
+    padding: 21px;
+}
+
+.infobox-description {
+    color: var(--gray-60);
+    margin-top: 0.6rem;
+    font-size: 0.66rem;
+    padding: 0px 20px;
+}
+
+.infobox-thumbnail .thumb img {
+    height: 320px;
+    width: 100%;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.infobox .body {
+    font-size: 0.86rem;
+    color: var(--page-color);
+    padding: 0.8rem;
+    border-top: dotted 1px var(--border-color-2);
+}
+
+#infobox .infobox-attr {
+    font-size: 0.76rem;
+    margin-bottom: 5px;
+    color: #27292f;
+    display: flex;
+}
+
+.infobox-attr-name {
+    min-width: 150px;
+    max-width: 150px;
+    font-weight: 500;
+}
+
+.mb-6 {
+    margin-bottom: 6px;
+}
+
+
+.fa-search {
+    font-size: 20px;
+    color: red;
+}
+
+.fa-search:hover {
+    color: white;
+}
+
+.buttons {
+    margin-top: 30px;
+}
+
+@media (max-width: 990px) {
+    #side-right {
+        width: 89%;
+    }
+}
+
+@media screen and (min-width:0px) and (max-width: 430px) {
+    #side-right {
+        width: 98%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        max-width: 1212px !important;
+        margin-left: 179px;
+    }
+}
+
+/* responsive */
+</style>
+<style>
+    .searchform-container {
+        margin-left: 0;
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    #searchform {
+        position: relative;
+        display: flex;
+        margin-bottom: 10px;
+        max-width: inherit;
+        align-items: center;
+        z-index: 3;
+        height: 56px !important;
+        width: 90%;
+        border: var(--border-color);
+        border-radius: 8px;
+        box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
+        background-color: var(--input-color);
+        transition: all 0.1s ease-in-out;
+    }
+
+    #search-icon.no-display {
+        display: flex !important;
+        transition: all 0.1s ease-in-out;
+        border-radius: 8px;
+    }
+
+    #search-icon {
+        opacity: 0.5 !important;
+        background: var(--input-color);
+        transition: all 0.1s ease-in-out;
+    }
+
+    #search-icon,
+    #back-arrow {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        min-width: 46px !important;
+        order: 1;
+        z-index: 3;
+        color: var(--input-color);
+        transition: all 0.1s ease-in-out;
+    }
+
+    #query {
+        flex-grow: 1;
+        width: inherit;
+        height: 100%;
+        order: 2;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        color: var(--page-color);
+        background-color: var(--input-color);
+        border-radius: 8px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        padding: 8px 18px;
+        padding-left: 0px !important;
+        transition: all 0.1s ease-in-out;
+    }
+
+    .form-input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: var(--search-form);
+        background-image: none;
+        border: .05rem solid #bcc3ce;
+        border-radius: .1rem;
+        color: var(--page-color);
+        display: block;
+        font-size: .8rem;
+        height: 1.8rem;
+        line-height: 1.2rem;
+        max-width: 100%;
+        outline: 0;
+        padding: .25rem .4rem;
+        position: relative;
+        transition: .2s, border .2s, box-shadow .2s, color .2s;
+        width: 100%;
+        transition: all 0.1s ease-in-out;
+    }
+
+    hr:not([size]) {
+        height: 2px;
+        color: var(--border-color-2);
+        margin-top: 25px;
+    }
+
+    @media screen and (min-width: 1000px) {
+        .searchform-container {
+            padding-left: 4rem;
+            padding-right: 5rem;
+        }
+
+        #searchform {
+            width: 62%;
+            box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
+        }
+    }
+</style>
+<!-- style for navigation -->
+<style>
+     #navbar-tabs{
+        width: 100%;
+        min-width: min(100%, calc(87.84px + 672px + 2vw + 2vw + 370px + 1rem))
+
+    }
+    #nav-tabs-container {
+        position: relative;
+        overflow: hidden;
+    }
+    #nav-tabs {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow: auto;
+        justify-content: space-between;
+        column-gap: 16px;
+        max-width: 672px;
+        align-items: baseline;
+        overflow: inherit;
+        padding-top: 3px;
+    }
+    #nav-tabs ul {
+        list-style: none;
+        display: flex;
+        margin: 0;
+    }
+    #primary-tabs {
+        column-gap: 30px;
+    }
+    #nav-tabs ul li {
+        margin: 0;
+    }
+    
+    #nav-tabs ul li.active a {
+        color: #FB542B !important;
+    }
+    #nav-tabs ul li a {
+        display: flex;
+        white-space: nowrap;
+        color: #9599A9 !important;
+        font-size: 12px;
+        font-weight: 600;
+        font-family: 'Manrope', Helvetica, sans-serif;
+        letter-spacing: 0.25px;
+        align-items: center;
+        position: relative;
+        padding-bottom: 8px;
+        line-height: 24px;
+    }
+    #nav-tabs ul li a .icon-wrapper {
+        color: #8C90A1 !important;
+        margin-right: 4px;
+    }
+    #nav-tabs ul li a .icon-wrapper svg {
+        fill: var(--gray-60);
+    }
+    .icon-wrapper .icon {
+        width: 100%;
+        height: 100%;
+    }
+    svg:not(:root) {
+        overflow: hidden;
+    }
+    .container-80 {
+        max-width: 100%;
+        margin: 0px 2%;
+        margin-top: 12px !important;
+        margin-bottom: -21px;
+        padding: 0;
+        justify-content: center;
+    }
+</style>
+<div id="main" >
+    <h1>LOGO</h1>
+    <div class="searchform-container">
+        <form class="form" action="/search" method="GET" id="searchform">
+            <span id="search-icon" class="no-display">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M6.57212 13.1442C2.94254 13.1442 0 10.2016 0 6.57173C0 2.94248 2.94268 0 6.57212 0C10.2016 0 13.1442 2.94248 13.1442 6.57173C13.1442 8.05658 12.6519 9.42642 11.8215 10.5269L16.3528 15.0581C16.7103 15.4156 16.7103 15.9952 16.3528 16.3527C15.9953 16.7102 15.4157 16.7102 15.0582 16.3527L10.527 11.8215C9.42657 12.6519 8.05682 13.1442 6.57212 13.1442ZM6.57212 11.2665C3.97956 11.2665 1.87775 9.16463 1.87775 6.57184C1.87775 3.97952 3.97966 1.87775 6.57212 1.87775C9.16458 1.87775 11.2665 3.97952 11.2665 6.57184C11.2665 9.16463 9.16468 11.2665 6.57212 11.2665Z"
+                        fill="url(#paint0_linear)"></path>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="16.6209" y1="16.6208" x2="-1.90605" y2="3.18655"
+                            gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#BF14A2"></stop>
+                            <stop offset="1" stop-color="#F73A1C"></stop>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </span>
+            <input name="query" id='query' type="text" class="form-input"
+                placeholder="Search the world without being tracked…" name="q" value="{{ request.GET.query}}"
+                autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search"
+                title="Search" aria-autocomplete="both" aria-haspopup="false" maxlength="2048" autofocus="">
+            <input name="source" value="web" type="hidden">
+            <div id="autocomplete" class=" svelte-ir7f0d"></div>
+        </form>
+    </div>
+    <br>
+</div>
+<div style="display: flex;
+padding-left: 23px;
+color: var(--page-color);
+margin-bottom: -14px !important">
+<h1 style="visibility: hidden;margin-bottom:0rem !important;">LOGO</h1>
+<div id="navbar-tabs">
+    <div class="container-80" id="nav-tabs-container">
+
+        <nav id="nav-tabs">
+            <ul id="primary-tabs">
+                <li class="active">
+                    <a href="#">
+                        <span class="icon-wrapper">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="18" height="17"
+                                viewBox="0 0 18 17">
+                                <path fill-rule="evenodd"
+                                    d="M1.6 7.336a5.736 5.736 0 1 1 11.471 0 5.736 5.736 0 0 1-11.471 0ZM7.336 0a7.336 7.336 0 1 0 4.957 12.743l3.56 3.561a.8.8 0 0 0 1.132-1.131l-3.636-3.636A7.336 7.336 0 0 0 7.335 0Z"
+                                    clip-rule="evenodd"></path>
+                            </svg> </span>
+                        <span>
+                            All
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon-wrapper">
+                            <svg class="icon" width="17" height="17" viewBox="0 0 17 17"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12.492 2.093h-8a2.6 2.6 0 00-2.6 2.6v8a2.6 2.6 0 002.6 2.6h8a2.6 2.6 0 002.6-2.6v-8a2.6 2.6 0 00-2.6-2.6zm-8-1.4a4 4 0 00-4 4v8a4 4 0 004 4h8a4 4 0 004-4v-8a4 4 0 00-4-4h-8zm5.46 7.048a.7.7 0 01.514.156l2.971 2.447a.7.7 0 01-.89 1.08L10.12 9.427l-2.172 2.676a.7.7 0 01-1.001.088l-1.142-.987L4.55 12.86a.7.7 0 01-1.116-.845L5.14 9.763a.7.7 0 011.016-.107l1.16 1.003 2.162-2.663a.7.7 0 01.473-.255zM4.34 5.291a.5.5 0 111 0 .5.5 0 01-1 0zm.5-1.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z">
+                                </path>
+                            </svg> </span>
+                        <span>
+                            Images
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon-wrapper">
+                            <svg class="icon" width="17" height="17" viewBox="0 0 17 17"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12.317 2.093h-.225a.8.8 0 00-.575.768v2.133h3.022a.575.575 0 00.378-.14v-.161a2.6 2.6 0 00-2.6-2.6zm0-1.4c.685 0 1.33.172 1.893.475a3.556 3.556 0 012.104 3.359c.002.055.003.11.003.166v8a4 4 0 01-4 4h-8a4 4 0 01-4-4v-8a4 4 0 014-4h8zm2.222 5.501c.13 0 .256-.014.378-.04v6.539a2.6 2.6 0 01-2.6 2.6h-8a2.6 2.6 0 01-2.6-2.6v-8a2.6 2.6 0 012.6-2.6h6.153a1.994 1.994 0 00-.153.768v2.333a1 1 0 001 1h3.222zM3.615 4.808a.6.6 0 000 1.2h4a.6.6 0 000-1.2h-4zm-.6 2.937a.6.6 0 01.6-.6h8a.6.6 0 110 1.2h-8a.6.6 0 01-.6-.6zm.6 1.866a.6.6 0 000 1.2h8a.6.6 0 000-1.2h-8z">
+                                </path>
+                            </svg> </span>
+                        <span>
+                            News
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <span class="icon-wrapper">
+                            <svg class="icon" width="16" height="17" viewBox="0 0 16 17"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M10.283 1.408h2.161c.2 0 .395.026.58.073L10.296 4.21H7.483l2.78-2.78a.462.462 0 00.02-.02zm-1.507 0H6.067a.544.544 0 01-.02.022l-2.78 2.78h2.708l2.8-2.802zM1.759 4.21l2.8-2.8H3.557a2.311 2.311 0 00-2.312 2.31v.49h.515zm10.046 0h2.95v-.49c0-.676-.29-1.284-.753-1.707L11.805 4.21zM1.245 5.454h13.51v7.154a2.311 2.311 0 01-2.31 2.311h-8.89a2.311 2.311 0 01-2.31-2.31V5.453zM0 3.719A3.556 3.556 0 013.556.164h8.888A3.556 3.556 0 0116 3.719v8.89a3.556 3.556 0 01-3.556 3.555H3.556A3.556 3.556 0 010 12.608V3.72zm7.22 8.674l2.933-1.694a.978.978 0 000-1.693L7.22 7.312a.978.978 0 00-1.466.847v3.387a.978.978 0 001.466.847zm-.222-3.772l2.133 1.232-2.133 1.231V8.621z"
+                                    clip-rule="evenodd"></path>
+                            </svg> </span>
+                        <span>
+                            Videos
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <ul id="secondary-tabs">
+                <li id="tools-info"><button class="btn btn--icon btn--sm svelte-amqj0r" title="Info">
+                        <div class="icon-wrapper"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M15.891 15.8931C14.3172 17.4667 12.2242 18.3333 9.99711 18.3333C7.77067 18.3333 5.6777 17.4667 4.10327 15.8924C0.854454 12.6431 0.854454 7.35625 4.10327 4.10764C5.6777 2.53333 7.77067 1.66667 9.99711 1.66667C12.2242 1.66667 14.3172 2.53333 15.891 4.10764C17.4661 5.68125 18.3333 7.77431 18.3333 10C18.3333 12.2257 17.4661 14.3188 15.891 15.8931ZM14.9091 5.08958C13.5974 3.77778 11.8532 3.05556 9.99711 3.05556C8.14175 3.05556 6.39749 3.77778 5.08581 5.08958C2.37789 7.79722 2.37789 12.2028 5.08581 14.9104C6.39749 16.2222 8.14175 16.9444 9.99711 16.9444C11.8532 16.9444 13.5974 16.2222 14.9091 14.9104C16.2215 13.5993 16.9441 11.8549 16.9441 10C16.9441 8.14514 16.2215 6.40139 14.9091 5.08958ZM11.3871 14.8611H8.60857C8.22562 14.8611 7.91394 14.55 7.91394 14.1667C7.91394 13.7833 8.22562 13.4722 8.60857 13.4722H9.3032V10.6944H8.60857C8.22562 10.6944 7.91394 10.3833 7.91394 10C7.91394 9.61667 8.22562 9.30556 8.60857 9.30556H9.99782C10.3815 9.30556 10.6924 9.61667 10.6924 10V13.4722H11.3871C11.7707 13.4722 12.0817 13.7833 12.0817 14.1667C12.0817 14.55 11.7707 14.8611 11.3871 14.8611ZM9.99781 7.91667C9.2319 7.91667 8.60856 7.29306 8.60856 6.52708C8.60856 5.76181 9.2319 5.13889 9.99781 5.13889C10.7644 5.13889 11.3871 5.76181 11.3871 6.52708C11.3871 7.29306 10.7644 7.91667 9.99781 7.91667Z">
+                                </path>
+                            </svg>
+                        </div>
+                    </button></li>
+                <li class="tabs-divider"></li>
+                <li id="feedback"><button class="btn btn--icon btn--sm" title="Feedback">
+                        <div class="icon-wrapper"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M15.5854 14.3056H5.47291L2.90346 17.5167C2.76874 17.6847 2.56805 17.7778 2.3611 17.7778C2.28402 17.7778 2.20624 17.7646 2.13124 17.7389C1.85277 17.641 1.66666 17.3785 1.66666 17.0833V13.6111V5.24792C1.66666 3.73264 2.8993 2.5 4.41527 2.5H15.5854C17.1007 2.5 18.3333 3.73264 18.3333 5.24792V11.5576C18.3333 13.0729 17.1007 14.3056 15.5854 14.3056ZM16.9444 5.24792C16.9444 4.49861 16.3347 3.88889 15.5854 3.88889H4.41527C3.66527 3.88889 3.05555 4.49861 3.05555 5.24792V13.6111V15.1042L4.59652 13.1778C4.60485 13.1674 4.61666 13.1632 4.62568 13.1535C4.65832 13.1167 4.69652 13.0896 4.7361 13.0604C4.77082 13.0354 4.80277 13.0083 4.84096 12.9903C4.87846 12.9722 4.91874 12.9646 4.95902 12.9528C5.00693 12.9403 5.05346 12.9271 5.10277 12.9243C5.11527 12.9236 5.12638 12.9167 5.13888 12.9167H15.5854C16.3347 12.9167 16.9444 12.3069 16.9444 11.5576V5.24792ZM14.1667 12.2215H10.6944C10.3111 12.2215 9.99999 11.9104 9.99999 11.5271C9.99999 11.1437 10.3111 10.8326 10.6944 10.8326H14.1667C14.55 10.8326 14.8611 11.1437 14.8611 11.5271C14.8611 11.9104 14.55 12.2215 14.1667 12.2215ZM12.2458 7.54792C12.2389 7.55486 12.2368 7.56458 12.2299 7.57222L8.66111 11.141C8.65903 11.1431 8.65625 11.1437 8.65417 11.1458C8.62153 11.1771 8.57847 11.1965 8.53958 11.2215C8.5 11.2465 8.46458 11.2785 8.42153 11.2951C8.41875 11.2958 8.41736 11.2986 8.41458 11.2993L6.07778 12.1771C5.99792 12.2069 5.91528 12.2215 5.83333 12.2215C5.65278 12.2215 5.475 12.1507 5.34236 12.0181C5.15 11.8257 5.0875 11.5375 5.18333 11.2826L6.0618 8.94583C6.0625 8.94305 6.06528 8.94097 6.06667 8.93819C6.07986 8.90278 6.10764 8.8743 6.12708 8.84167C6.15555 8.79444 6.17986 8.74375 6.21736 8.70555C6.21875 8.70347 6.21875 8.70208 6.22083 8.7L9.78889 5.13055C9.79722 5.12292 9.80764 5.12014 9.81597 5.11319C9.82222 5.10625 9.8243 5.09722 9.83055 5.09028C10.4833 4.43611 11.6208 4.43611 12.2729 5.09028C12.5986 5.41597 12.7778 5.8493 12.7778 6.31042C12.7778 6.77222 12.5979 7.20555 12.2722 7.53055C12.2646 7.53819 12.2542 7.54028 12.2458 7.54792ZM11.2903 6.07153C11.2035 5.98542 11.1035 5.97222 11.0521 5.97222C11 5.97222 10.9 5.98542 10.8132 6.07153C10.8055 6.07917 10.7951 6.08194 10.7868 6.08889C10.7799 6.09653 10.7778 6.10556 10.7708 6.1125L7.30763 9.57778L7.02152 10.3389L7.78541 10.0521L11.2479 6.59028C11.2555 6.58194 11.2667 6.57986 11.2743 6.57222C11.2812 6.56458 11.2833 6.55486 11.291 6.54722C11.3757 6.4625 11.3889 6.3625 11.3889 6.31042C11.3889 6.25833 11.3757 6.15764 11.2903 6.07153Z">
+                                </path>
+                            </svg></div>
+                    </button> </li>
+            </ul>
+        </nav>  
+    </div>
+  </div>
+</div>
+<hr>

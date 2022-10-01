@@ -1,302 +1,32 @@
 {% include './theme.html' %}
 
 <body>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+<style>
+    pre {
+    background-color: var(--code-bg);
+    padding: 0.55em 0;
+    padding-left: 0.8rem;
+    font-size: 13px;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #a0a0a04f transparent;
+    white-space: pre-wrap;
+    border-radius: 4px;
+    border: 1px solid #22232A;
+}
+pre code {
+    background: none;
+    padding: 0;
+}
+code, :not(pre)>code[class*='language-'], pre[class*='language-']{
+    background: var(--code-bg);
+    padding: 0.55em 0;
+    border-radius: 4px;
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: var(--page-background);
-            overflow-x: hidden;
-            transition: 0.3s;
-        }
-
-        #main {
-            display: flex;
-            padding-top: 32px;
-            padding-left: 23px;
-            color: var(--page-color);
-        }
-
-        .title {
-            font-weight: 400;
-            margin: 1.5rem 0px 0.5rem;
-            padding: 0.5em 0px 0.25em;
-            line-height: 1;
-        }
-
-        #side-right {
-            width: 370px;
-        }
-
-        .section {
-            margin-top: 74px;
-            margin-bottom: 15px;
-        }
-
-        .section:last-child {
-            margin-left: 2vw;
-        }
-
-        .infobox {
-            border: none;
-            border: solid 0px #E2E8ED;
-            background-color: var(--snippet-color);
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            max-width: 100%;
-            padding: 0px;
-            transition: 0.1s ease-in-out;
-        }
-
-        .infobox-header {
-            display: flex;
-            flex-direction: column-reverse;
-            justify-content: space-between;
-            padding: 0.8rem;
-        }
-
-        .infobox-header-text {
-            padding-top: 0.2rem;
-        }
-
-
-        .infobox-title {
-            font-size: 19px;
-            font-family: 'Poppins', arial, sans-serif;
-            color: var(--page-color) !important;
-            line-height: 1.2;
-            word-break: break-all;
-            padding: 21px;
-        }
-
-        .infobox-description {
-            color: var(--page-color);
-            margin-top: 0.6rem;
-            font-size: 0.66rem;
-            padding: 0px 20px;
-        }
-
-        .infobox-thumbnail .thumb img {
-            height: 320px;
-            width: 100%;
-            object-fit: cover;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-        }
-
-        .infobox .body {
-            font-size: 0.86rem;
-            color: var(--page-color);
-            padding: 0.8rem;
-            border-top: dotted 1px var(--border-color-2);
-        }
-
-        #infobox .infobox-attr {
-            font-size: 0.76rem;
-            margin-bottom: 5px;
-            color: #27292f;
-            display: flex;
-        }
-
-        .infobox-attr-name {
-            min-width: 150px;
-            max-width: 150px;
-            font-weight: 500;
-        }
-
-        .mb-6 {
-            margin-bottom: 6px;
-        }
-
-
-        .fa-search {
-            font-size: 20px;
-            color: red;
-        }
-
-        .fa-search:hover {
-            color: white;
-        }
-
-        .buttons {
-            margin-top: 30px;
-        }
-
-        @media (max-width: 990px) {
-            #side-right {
-                width: 89%;
-            }
-        }
-
-        @media screen and (min-width:0px) and (max-width: 430px) {
-            #side-right {
-                width: 98%;
-            }
-        }
-
-        @media screen and (min-width: 1200px) {
-
-            .container,
-            .container-lg,
-            .container-md,
-            .container-sm,
-            .container-xl,
-            .container-xxl {
-                max-width: 1212px !important;
-                margin-left: 179px;
-            }
-        }
-
-        /* responsive */
-    </style>
-
-    <style>
-        .searchform-container {
-            margin-left: 0;
-            width: 100%;
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-
-        #searchform {
-            position: relative;
-            display: flex;
-            margin-bottom: 10px;
-            max-width: inherit;
-            align-items: center;
-            z-index: 3;
-            height: 56px !important;
-            width: 90%;
-            border: var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
-            background-color: var(--input-color);
-            transition: all 0.1s ease-in-out;
-        }
-
-        #search-icon.no-display {
-            display: flex !important;
-            transition: all 0.1s ease-in-out;
-            border-radius: 8px;
-        }
-
-        #search-icon {
-            opacity: 0.5 !important;
-            background: var(--input-color);
-            transition: all 0.1s ease-in-out;
-        }
-
-        #search-icon,
-        #back-arrow {
-            display: flex;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-            min-width: 46px !important;
-            order: 1;
-            z-index: 3;
-            color: var(--input-color);
-            transition: all 0.1s ease-in-out;
-        }
-
-        #query {
-            flex-grow: 1;
-            width: inherit;
-            height: 100%;
-            order: 2;
-            border: none;
-            outline: none;
-            box-shadow: none;
-            color: var(--page-color);
-            background-color: var(--input-color);
-            border-radius: 8px;
-            border-top-left-radius: 10px;
-            border-bottom-left-radius: 10px;
-            padding: 8px 18px;
-            padding-left: 0px !important;
-            transition: all 0.1s ease-in-out;
-        }
-
-        .form-input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background: var(--search-form);
-            background-image: none;
-            border: .05rem solid #bcc3ce;
-            border-radius: .1rem;
-            color: var(--page-color);
-            display: block;
-            font-size: .8rem;
-            height: 1.8rem;
-            line-height: 1.2rem;
-            max-width: 100%;
-            outline: 0;
-            padding: .25rem .4rem;
-            position: relative;
-            transition: .2s, border .2s, box-shadow .2s, color .2s;
-            width: 100%;
-            transition: all 0.1s ease-in-out;
-        }
-
-        hr:not([size]) {
-            height: 2px;
-            color: var(--border-color-2);
-            margin-top: 25px;
-        }
-
-        @media screen and (min-width: 1000px) {
-            .searchform-container {
-                padding-left: 4rem;
-                padding-right: 5rem;
-            }
-
-            #searchform {
-                width: 62%;
-                box-shadow: 0px 2px 8px rgb(37 44 54 / 25%);
-            }
-        }
-    </style>
-    <div id="main">
-        <h1>LOGO</h1>
-        <div class="searchform-container">
-            <form class="form" action="/search" method="GET" id="searchform">
-                <span id="search-icon" class="no-display">
-                    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M6.57212 13.1442C2.94254 13.1442 0 10.2016 0 6.57173C0 2.94248 2.94268 0 6.57212 0C10.2016 0 13.1442 2.94248 13.1442 6.57173C13.1442 8.05658 12.6519 9.42642 11.8215 10.5269L16.3528 15.0581C16.7103 15.4156 16.7103 15.9952 16.3528 16.3527C15.9953 16.7102 15.4157 16.7102 15.0582 16.3527L10.527 11.8215C9.42657 12.6519 8.05682 13.1442 6.57212 13.1442ZM6.57212 11.2665C3.97956 11.2665 1.87775 9.16463 1.87775 6.57184C1.87775 3.97952 3.97966 1.87775 6.57212 1.87775C9.16458 1.87775 11.2665 3.97952 11.2665 6.57184C11.2665 9.16463 9.16468 11.2665 6.57212 11.2665Z"
-                            fill="url(#paint0_linear)"></path>
-                        <defs>
-                            <linearGradient id="paint0_linear" x1="16.6209" y1="16.6208" x2="-1.90605" y2="3.18655"
-                                gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#BF14A2"></stop>
-                                <stop offset="1" stop-color="#F73A1C"></stop>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </span>
-                <input name="query" id='query' type="text" class="form-input"
-                    placeholder="Search the world without being tracked…" name="q" value="{{ request.GET.query}}"
-                    autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search"
-                    title="Search" aria-autocomplete="both" aria-haspopup="false" maxlength="2048" autofocus="">
-                <input name="source" value="web" type="hidden">
-                <div id="autocomplete" class=" svelte-ir7f0d"></div>
-            </form>
-        </div>
-        <br>
-    </div>
-    <hr>
+}
+</style>
+{% include  './top_bar.html' %}
+    
 
     {% if data %}
     <div class="container">
@@ -466,6 +196,11 @@
                               
                             </a>
                             <br>
+                            {% if item2.code_text %}
+                            <div style="color:var(--page-color); margin-top:14px;">
+                            {{ item2.code_text |safe }}
+                            </div>
+                            {% endif %}
                             {% if item2.rating_text %}
                             <div style="display: flex;margin-top:10px;">
                             <img class="rating-source mr-5" src="https://imgs.search.brave.com/_XzIkQDCEJ7aNlT3HlNUHBRcj5nQ9R4TiU4cHpSn7BY/rs:fit:32:32:1/g:ce/aHR0cDovL2Zhdmlj/b25zLnNlYXJjaC5i/cmF2ZS5jb20vaWNv/bnMvZmU3MjU1MmUz/MDhkYjY0OGFlYzY3/ZDVlMmQ4NWZjZDhh/NzZhOGZlZjNjNGE5/M2M0OWI1Y2M2ZjQy/MWE5ZDc3OC93d3cu/aW1kYi5jb20v" alt="IMDb logo" style="width:18px;margin: 3px; border-radius: 8px;">
@@ -505,7 +240,11 @@
                         <div class="infobox-thumbnail">
                             <a href="{{ item2.image_url }}" target="_self">
                                 <div class="thumb">
+                                    {% if item2.image_url %}
                                     <img src="{{ item2.image_url }}" alt="">
+                                    {% else %}
+                                    {{ item2.code|safe }}
+                                    {% endif %}
                                 </div>
                                 <hr>
                             </a>
