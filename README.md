@@ -1,8 +1,8 @@
 # Search-engine From Python
 Website which works like a search engine. Is user scraping concept to scrape the data from the google and shows it in a clean way. It UI is clean. Do check it!
 
-<img src="https://user-images.githubusercontent.com/69071769/187411511-db348bcc-d1de-41a6-b568-867cc6af2b30.png">
-
+<img  src="https://user-images.githubusercontent.com/69071769/187411511-db348bcc-d1de-41a6-b568-867cc6af2b30.png">
+<img alt="image" src="https://user-images.githubusercontent.com/69071769/193420219-ca754cdb-8cd1-4633-a5e0-9f78b8039f68.png">
 ## Installation Process
 
 At first clone the repository
