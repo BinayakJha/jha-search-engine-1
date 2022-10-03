@@ -12,7 +12,6 @@
     scrollbar-color: #a0a0a04f transparent;
     white-space: pre-wrap;
     border-radius: 4px;
-    border: 1px solid #22232A;
 }
 pre code {
     background: none;
@@ -188,17 +187,34 @@ code, :not(pre)>code[class*='language-'], pre[class*='language-']{
 
                 <div id="infobox" class="infobox fdb" data-loc="side" data-pos="0" data-type="infobox" data-subtype="generic" data-ref-pos="0">
                     <div class="infobox-header">
+
                         <div class="infobox-header-text">
-                            <a class="infobox-title" href="{{ item2.links }}" target="_self"
-                                style="margin-left: -19px;">
+                            <br>
+                            <a class="infobox-title" href="{{ item2.title1_link }}" target="_self"
+                                style="margin-left: -19px;text-align: inherit;margin-top: 5px;font-size: 15px;">
                                 
                                 {{ item2.title1 }}
                               
                             </a>
                             <br>
                             {% if item2.code_text %}
-                            <div style="color:var(--page-color); margin-top:14px;">
+                            <div style="color:var(--page-color); margin-top:14px;text-align: justify;font-size: 0.65rem;">
                             {{ item2.code_text |safe }}
+                            </div>
+                            {% endif %}
+                            {% if item2.code_text_2 %}
+                            <div style="color:var(--page-color); margin-top:14px;text-align: justify;font-size: 0.65rem;">
+                            {{ item2.code_text_2 |safe }}
+                            </div>
+                            {% endif %}
+                            {% if item2.code_text_3 %}
+                            <div style="color:var(--page-color); margin-top:14px;text-align: justify;font-size: 0.65rem;">
+                            {{ item2.code_text_3 |safe }}
+                            </div>
+                            {% endif %}
+                            {% if item2.code_text_4 %}
+                            <div style="color:var(--page-color); margin-top:14px;text-align: justify;font-size: 0.65rem;">
+                            {{ item2.code_text_4 |safe }}
                             </div>
                             {% endif %}
                             {% if item2.rating_text %}
@@ -211,7 +227,7 @@ code, :not(pre)>code[class*='language-'], pre[class*='language-']{
                             {% endif %}
                             </div>
                             {% endif %}
-                            <div class="infobox-description" style="padding: 0px;">
+                            <div class="infobox-description" style="padding: 0px;text-align: justify;">
                                 {{ item2.description }}
 
                             </div>
@@ -237,13 +253,16 @@ code, :not(pre)>code[class*='language-'], pre[class*='language-']{
                             {% endif %}
 
                         </div>
-                        <div class="infobox-thumbnail">
+                        <div class="infobox-thumbnail" style="background: var(--code-bg);
+                        border: 1px solid #22232A;">
                             <a href="{{ item2.image_url }}" target="_self">
                                 <div class="thumb">
                                     {% if item2.image_url %}
                                     <img src="{{ item2.image_url }}" alt="">
                                     {% else %}
                                     {{ item2.code|safe }}
+                                    {{ item2.code_2|safe }}
+                                    <br>
                                     {% endif %}
                                 </div>
                                 <hr>
@@ -261,8 +280,12 @@ code, :not(pre)>code[class*='language-'], pre[class*='language-']{
                     </div>
                     <div class="body">
                         <div class="attribution text-xs">
+                            {% if item2.author %}
+                                {{ item2.author }}
+                            {% else %}
                             Data from
                             <a href="{{ item2.links }}" id="source">Wikipedia</a>
+                            {% endif %}
                         </div>
                     </div>
 
